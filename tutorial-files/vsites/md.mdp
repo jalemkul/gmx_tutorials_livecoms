@@ -1,0 +1,28 @@
+; Parameters describing what to do, when to stop and what to save
+integrator	    = md        ; leap-frog integrator		
+nsteps		    = 50000	  	; Maximum number of steps to perform
+dt              = 0.002     ; 2 fs * 50000 steps = 100 ps
+
+; output
+nstxout         = 500
+
+; temperature coupling
+tcoupl          = V-rescale 
+tc_grps         = System
+tau_t           = 0.1
+ref_t           = 298
+
+gen_vel         = yes
+gen_temp        = 298
+gen_seed        = -1 
+
+; Settings below are for the all-vs-all kernels
+cutoff-scheme   = group
+nstlist		    = 0		    ; Fixed neighbor list
+ns_type		    = simple	; Method to determine neighbor list (simple, grid)
+coulombtype	    = cutoff	; Infinite cutoffs used here 
+rlist           = 0
+rcoulomb	    = 0		    ; short range electrostatic cut-off (0 = infinite)
+rvdw		    = 0	    	; short range van der Waals cut-off (0 = infinite)
+pbc		        = no 		; Non-periodic system 
+comm-mode       = angular

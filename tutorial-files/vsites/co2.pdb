@@ -1,0 +1,11 @@
+TITLE     CO2 with dummy masses
+REMARK    THIS IS A SIMULATION BOX
+CRYST1   50.000   50.000   50.000  90.00  90.00  90.00 P 1           1
+MODEL        1
+ATOM      1  O1  CO2     1       0.000   0.000   0.000  1.00  0.00            
+ATOM      2  C   CO2     1       1.250   0.000   0.000  1.00  0.00            
+ATOM      3  O2  CO2     1       2.500   0.000   0.000  1.00  0.00            
+ATOM      4  M1  CO2     1       0.180   0.000   0.000  1.00  0.00            
+ATOM      5  M2  CO2     1       2.320   0.000   0.000  1.00  0.00            
+TER
+ENDMDL

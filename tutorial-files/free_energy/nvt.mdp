@@ -1,0 +1,84 @@
+; Run control
+integrator               = sd       ; Langevin dynamics
+tinit                    = 0
+dt                       = 0.002
+nsteps                   = 50000    ; 100 ps
+nstcomm                  = 100
+; Output control
+nstxout                  = 500
+nstvout                  = 500
+nstfout                  = 0
+nstlog                   = 500
+nstenergy                = 500
+nstxout-compressed       = 0
+; Neighborsearching and short-range nonbonded interactions
+cutoff-scheme            = verlet
+nstlist                  = 20 
+ns_type                  = grid
+pbc                      = xyz
+rlist                    = 1.2
+; Electrostatics
+coulombtype              = PME
+rcoulomb                 = 1.2
+; van der Waals
+vdwtype                  = cutoff
+vdw-modifier             = potential-switch
+rvdw-switch              = 1.0
+rvdw                     = 1.2
+; Apply long range dispersion corrections for Energy and Pressure
+DispCorr                  = EnerPres
+; Spacing for the PME/PPPM FFT grid
+fourierspacing           = 0.12
+; EWALD/PME/PPPM parameters
+pme_order                = 6
+ewald_rtol               = 1e-06
+epsilon_surface          = 0
+; Temperature coupling
+; tcoupl is implicitly handled by the sd integrator
+tc_grps                  = system
+tau_t                    = 1.0
+ref_t                    = 298 
+; Pressure coupling is off for NVT
+Pcoupl                   = No
+tau_p                    = 0.5
+compressibility          = 4.5e-05
+ref_p                    = 1.0 
+; Free energy control stuff
+free_energy              = yes
+init_lambda_state        = 0
+delta_lambda             = 0
+calc_lambda_neighbors    = 1        ; only immediate neighboring windows
+couple-moltype           = Methane  ; name of moleculetype to decouple
+couple-lambda0           = vdw      ; only van der Waals interactions
+couple-lambda1           = none     ; turn off everything, in this case only vdW
+couple-intramol          = no
+; Vectors of lambda specified here
+; Each combination is an index that is retrieved from init_lambda_state for each simulation
+; init_lambda_state        0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20
+vdw_lambdas              = 0.00 0.05 0.10 0.15 0.20 0.25 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 0.75 0.80 0.85 0.90 0.95 1.00
+coul_lambdas             = 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+; We are not transforming any bonded or restrained interactions
+bonded_lambdas           = 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+restraint_lambdas        = 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+; Masses are not changing (particle identities are the same at lambda = 0 and lambda = 1)
+mass_lambdas             = 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+; Not doing simulated temperting here
+temperature_lambdas      = 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+; Options for the decoupling
+sc-alpha                 = 0.5
+sc-coul                  = no       ; linear interpolation of Coulomb (none in this case)
+sc-power                 = 1
+sc-sigma                 = 0.3
+nstdhdl                  = 10
+; Generate velocities to start
+gen_vel                  = yes
+gen_temp                 = 300
+gen_seed                 = -1
+; options for bonds
+constraints              = h-bonds  ; we only have C-H bonds here
+; Type of constraint algorithm
+constraint-algorithm     = lincs
+; Do not constrain the starting configuration
+continuation             = no
+; Highest order in the expansion of the constraint coupling matrix
+lincs-order              = 12

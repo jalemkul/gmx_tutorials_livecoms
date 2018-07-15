@@ -1,0 +1,27 @@
+;
+;	File 'A_128.top' was generated
+;	By user: jalemkul (502)
+;	On host: bevany.biochem.vt.edu
+;	At date: Fri Oct 20 13:26:53 2006
+;
+;	This is your topology file
+;	1SOL     OW    1  -2.449  -4.190  -1.80
+;
+; Include chain topologies
+#include "ffG53a6_lipid.itp"
+#include "dppc.itp"
+
+; Include water topology
+#include "spc.itp"
+
+; Include ion topologies
+#include "ions.itp"
+
+; System specifications
+[ system ]
+128-Lipid DPPC Bilayer 
+
+[ molecules ]
+; molecule name nr.
+DPPC 128
+SOL 3655

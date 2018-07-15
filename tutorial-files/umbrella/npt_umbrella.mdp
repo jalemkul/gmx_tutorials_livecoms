@@ -1,0 +1,65 @@
+title       = Umbrella pulling simulation 
+define      = -DPOSRES_B
+; Run parameters
+integrator  = md
+dt          = 0.002
+tinit       = 0
+nsteps      = 50000     ; 100 ps 
+nstcomm     = 10
+; Output parameters
+nstvout             = 5000  ; every 10 ps 
+nstfout             = 5000
+nstxout-compressed  = 5000
+nstenergy           = 5000
+; Bond parameters
+constraint_algorithm    = lincs
+constraints             = all-bonds
+continuation            = no 
+; Single-range cutoff scheme
+cutoff-scheme   = Verlet
+nstlist         = 20
+ns_type         = grid 
+rlist           = 1.4
+rcoulomb        = 1.4
+rvdw            = 1.4
+; PME electrostatics parameters
+coulombtype     = PME
+fourierspacing  = 0.12
+fourier_nx      = 0
+fourier_ny      = 0
+fourier_nz      = 0
+pme_order       = 4
+ewald_rtol      = 1e-5
+optimize_fft    = yes
+; Berendsen temperature coupling is on in two groups
+Tcoupl      = Berendsen 
+tc_grps     = Protein   Non-Protein 
+tau_t       = 0.5       0.5
+ref_t       = 310       310
+; Pressure coupling is on
+Pcoupl          = Berendsen 
+pcoupltype      = isotropic
+tau_p           = 1.0       
+compressibility = 4.5e-5
+ref_p           = 1.0
+refcoord_scaling = com
+; Generate velocities is on 
+gen_vel     = yes 
+gen_temp    = 310
+; Periodic boundary conditions are on in all directions
+pbc     = xyz
+; Long-range dispersion correction
+DispCorr    = EnerPres
+; Pull code
+pull                    = yes
+pull_ncoords            = 1         ; only one reaction coordinate
+pull_ngroups            = 2         ; two groups defining one reaction coordinate
+pull_group1_name        = Chain_A
+pull_group2_name        = Chain_B
+pull_coord1_type        = umbrella  ; harmonic potential
+pull_coord1_geometry    = distance  ; simple distance increase
+pull_coord1_dim         = N N Y
+pull_coord1_groups      = 1 2
+pull_coord1_start       = yes       ; define initial COM distance > 0
+pull_coord1_rate        = 0.0       ; restrain in place 
+pull_coord1_k           = 1000      ; kJ mol^-1 nm^-2

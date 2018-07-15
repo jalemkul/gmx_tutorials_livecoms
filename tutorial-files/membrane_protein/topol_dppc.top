@@ -1,0 +1,26 @@
+;
+;	File 'topol_dppc.top' was generated
+;	By user: jalemkul (502)
+;	On host: bevany.biochem.vt.edu
+;	At date: Fri Oct 20 13:26:53 2006
+;
+;	This is your topology file
+;
+; Include chain topologies
+#include "gromos53a6_lipid.ff/forcefield.itp"
+#include "dppc.itp"
+
+; Include water topology
+#include "gromos53a6_lipid.ff/spc.itp"
+
+; Include ion topologies
+#include "gromos53a6_lipid.ff/ions.itp"
+
+; System specifications
+[ system ]
+128-Lipid DPPC Bilayer 
+
+[ molecules ]
+; molecule name nr.
+DPPC 128
+SOL 3655

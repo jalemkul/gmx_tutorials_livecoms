@@ -1,0 +1,84 @@
+; CO2 topology with virtual sites
+;
+; Two massive particles that each have 1/2 the mass of CO2
+; Each massive particle has no nonbonded interactions
+; The virtual sites represent C and O atoms, which have charge 
+;    and LJ parameters but no mass
+;
+; Overall structure is O--M---C---M--O where "M" indicate mass centers
+;
+; Moment of inertia and total mass must be correct
+; Mass is easy - each mass center is 1/2 * mass(CO2)
+;
+; Total mass = (2 * 15.9994) + 12.011 = 44.0098 amu
+;    each M particle has a mass of 22.0049 amu
+;
+; Moment of inertia for three linear atoms
+;    I = 2 * m_O * L^2
+;        where L is the C=O bond length
+;
+;    I = 2 * (15.9994) * (0.125)^2
+;    I = 31.9988 * 0.015625
+;    I = 0.49998125
+;
+; Moment of inertia for two atoms
+;    I = ((m_A * m_B)/m_Total) * L^2
+;    L = sqrt[ I/((m_A * m_B)/m_Total) ]
+;    L = sqrt[ 0.49998125 / ((22.0049 * 22.0049)/44.0098)
+;    L = sqrt[ 0.49998125 / 11.00245 ]
+;    L = 0.213172980408142
+;    L = 0.213173
+;
+;    L/2 = 0.10658649020407
+;    L/2 = 0.1065865
+;
+;
+; PLEASE NOTE
+;    The charges on C and O atoms were taken from:
+;    Q. Yang and C. Zhong (2006) J. Phys. Chem. B 110: 17776-17783
+;      doi: 10.1021/jp062723w
+;    The validity of these charges within the OPLS-AA force field is not explicitly
+;    endorsed by their use here. As the purpose of this topology is to illustrate the
+;    use of virtual sites to create the model, these values are used for educational
+;    purposes only to produce a reasonably sensible topology.
+
+#include "oplsaa.ff/forcefield.itp"
+
+; Here we introduce a special atom type to be used for each mass center
+[ atomtypes ]
+; name  bond_type    mass    charge   ptype          sigma      epsilon
+  MCO   MCO          0.000   0.000    A              0.000      0.000
+
+[ moleculetype ]
+; name  nrexcl
+CO2     2
+
+[ atoms ]
+;   nr       type  resnr residue  atom   cgnr     charge       mass  typeB    chargeB      massB
+     1   opls_272      1    CO2     O1      1    -0.350      0.0000 
+     2   opls_271      1    CO2      C      1     0.700      0.0000
+     3   opls_272      1    CO2     O2      1    -0.350      0.0000
+     4        MCO      1    CO2     M1      1     0.000     22.0049     
+     5        MCO      1    CO2     M2      1     0.000     22.0049
+
+[ constraints ]
+; There are no bonds in this system
+; Instead, we fix the distance between the mass centers such that
+; the virtual sites can be reconstructed
+    4   5   1   0.213173
+
+[ virtual_sites2 ]
+; the M--O distance is 0.125 - 0.1065865 = 0.0184135
+; the M--M distance is 0.213173
+; therefore, the fraction of the distance along the M--M length is (0.213173+0.0184135)/0.213173 = 1.0851116
+; thus placing the virtual O sites beyond the M--M distance 
+; site  ai  aj  funct   a
+     1   4   5      1   1.0851116   ; relative to mass center 4, extends beyond mass center 5 
+     2   4   5      1   0.5000      ; right in the middle
+     3   5   4      1   1.0851116   ; as in the case of site 1
+
+[ system ]
+CO2 in vacuo
+
+[ molecules ]
+CO2     1

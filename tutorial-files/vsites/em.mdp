@@ -1,0 +1,15 @@
+; Parameters describing what to do, when to stop and what to save
+integrator	    = steep		; Algorithm (steep = steepest descent minimization)
+emtol		    = 10.0  	; Stop minimization when the maximum force < 10.0 kJ/mol
+emstep          = 0.01      ; Energy step size
+nsteps		    = 50000	  	; Maximum number of (minimization) steps to perform
+
+; Parameters describing how to find the neighbors of each atom and how to calculate the interactions
+cutoff-scheme   = group
+nstlist		    = 0		    ; Frequency to update the neighbor list and long range forces
+ns_type		    = simple	; Method to determine neighbor list (simple, grid)
+rlist		    = 0		    ; Cut-off for making neighbor list (short range forces)
+coulombtype	    = cutoff	; Treatment of long range electrostatic interactions
+rcoulomb	    = 0		    ; long range electrostatic cut-off
+rvdw		    = 0	    	; long range van der Waals cut-off
+pbc		        = no 		; no PBC to model gas phase 

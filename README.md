@@ -1,4 +1,4 @@
-# Basic and Advanced Tutorials for the GROMACS Molecular Simulation Package 
+# From Proteins to Perturbed Hamiltonians: A Suite of Tutorials for the GROMACS-2018 Molecular Simulation Package 
 
 This document contains a description of seven tutorials for carrying out different types
 of molecular dynamics (MD) simulations in the popular, open-source GROMACS package.
@@ -16,8 +16,9 @@ This paper is being developed as a living document, open to changes from the com
 
 ## List of Released Versions
 <!-- update this when you decide to release a version either by preprint or when submitted to LiveCoMS-->
-- v0.1: Initial version 
+- v1.0: Submitted to LiveCoMS
 
 ## Changelog
 <!-- Here, record summaries of important changes. A granular discussion of changes will be kept in GitHub by issue tracking.-->
 - 5 March 2018: Started document
+- 10 July 2018: First full draft completed, all tutorials updated for GROMACS-2018

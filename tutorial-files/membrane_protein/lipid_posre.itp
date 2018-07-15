@@ -1,0 +1,5 @@
+; position restraint file for DPPC P8
+
+[ position_restraints ]
+;  i funct       fcx        fcy        fcz
+   8    1       0       0       1000

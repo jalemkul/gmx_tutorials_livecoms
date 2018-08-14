@@ -134,7 +134,19 @@ my $nmiddle = scalar(@middle_atoms);
 foreach $_ (@middle_atoms)
 {
     my @data = split(" ", $_);
-    my $z = $data[5];
+    my $z = 0;
+    # last field on line if no velocities, otherwise n-3
+    if (scalar(@data) > 6)
+    {
+        # there are velocities
+        $z = $data[scalar(@data)-4];
+    }
+    else
+    {
+        $z = $data[scalar(@data)-1];
+    }
+    # debug
+    #print "$z\n";
 
     $total_z += $z;
 }
@@ -150,7 +162,17 @@ my @bottom_ref;
 foreach $_ (@ref_atoms)
 {
     my @data = split(" ", $_);
-    my $z = $data[5];
+    my $z = 0;
+    # last field on line if no velocities, otherwise n-3
+    if (scalar(@data) > 6)
+    {
+        # there are velocities
+        $z = $data[scalar(@data)-4];
+    }
+    else
+    {
+        $z = $data[scalar(@data)-1];
+    }
 
     if ($z > $middle_z)
     {
@@ -171,10 +193,25 @@ foreach $_ (@ref_atoms)
 my $top_z;
 my $ntop = scalar(@top_ref);
 
+# debug
+print "ntop = $ntop\n";
+
 foreach $_ (@top_ref)
 {
     my @data = split(" ", $_);
-    my $z = $data[5];
+    my $z = 0;
+    # last field on line if no velocities, otherwise n-3
+    if (scalar(@data) > 6)
+    {
+        # there are velocities
+        $z = $data[scalar(@data)-4];
+    }
+    else
+    {
+        $z = $data[scalar(@data)-1];
+    }
+    # debug
+    print "$z\n";
 
     $top_z += $z;
 }
@@ -187,7 +224,17 @@ my $nbottom = scalar(@bottom_ref);
 foreach $_ (@bottom_ref)
 {
     my @data = split(" ", $_);
-    my $z = $data[5];
+    my $z = 0;
+    # last field on line if no velocities, otherwise n-3
+    if (scalar(@data) > 6)
+    {
+        # there are velocities
+        $z = $data[scalar(@data)-4];
+    }
+    else
+    {
+        $z = $data[scalar(@data)-1];
+    }
 
     $bottom_z += $z;
 }

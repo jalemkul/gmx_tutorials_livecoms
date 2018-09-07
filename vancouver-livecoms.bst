@@ -879,13 +879,16 @@ FUNCTION {format.inventors}
 
 FUNCTION {format.note}
 {
-  url empty$
-    'skip$
-    { "\urlprefix\url{" url * "}" * output }
-  if$
+  %%url empty$
+  %%  'skip$
+  %%  { "\urlprefix\url{" url * "}" * output }
+  %%if$
   doi empty$
-    'skip$
-    { "\href{" doi * "}{\doiprefix \detokenize{" * doi * "}}" * output }
+    {url empty$
+      'skip$
+      { "\urlprefix\url{" url * "}" * output }
+    if$}
+    { "\href{https://dx.doi.org/" doi * "}{\doiprefix \detokenize{" * doi * "}}" * output }
   if$
  note empty$
     { "" }
@@ -1012,7 +1015,9 @@ FUNCTION {word.in}
 
 FUNCTION {format.journal.date}
 {
-  month "month" bibinfo.check
+  %month "month" bibinfo.check  %% removed to suppress month
+  no.blank.or.punct  %% added to achieve proper ordering (journal name. Year ; ...)
+  ""
   duplicate$ empty$
   year  "year"  bibinfo.check duplicate$ empty$
     {
@@ -1624,8 +1629,8 @@ FUNCTION {techreport}
   format.institution.address output
   format.date "year" output.check
 %  format.tr.number output.nonnull
-%  new.block
-%  format.note output
+  new.block
+  format.note output
 %  output.web.refs  % urlbst
   fin.entry
 }
@@ -1824,30 +1829,30 @@ FUNCTION {editor.sort}
 }
 FUNCTION {presort}
 { calc.label
-  label sortify
-  "    "
-  *
-  type$ "book" =
-  type$ "inbook" =
-  or
-    'author.editor.sort
-    { type$ "proceedings" =
-        'editor.sort
-        'author.sort
-      if$
-    }
-  if$
-  #1 entry.max$ substring$
-  'sort.label :=
-  sort.label
-  *
-  "    "
-  *
-  title field.or.null
-  sort.format.title
-  *
-  #1 entry.max$ substring$
-  'sort.key$ :=
+  %  label sortify
+  %  "    "
+  %  *
+  %  type$ "book" =
+  %  type$ "inbook" =
+  %  or
+  %    'author.editor.sort
+  %    { type$ "proceedings" =
+  %        'editor.sort
+  %        'author.sort
+  %      if$
+  %    }
+  %  if$
+  %  #1 entry.max$ substring$
+  %  'sort.label :=
+  %  sort.label
+  %  *
+  %  "    "
+  %  *
+  %  title field.or.null
+  %  sort.format.title
+  %  *
+  %  #1 entry.max$ substring$
+  %  'sort.key$ :=
 }
 
 ITERATE {presort}
@@ -1903,8 +1908,8 @@ FUNCTION {bib.sort.order}
   #1 entry.max$ substring$
   'sort.key$ :=
 }
-ITERATE {bib.sort.order}
-SORT
+% ITERATE {bib.sort.order}
+% SORT
 FUNCTION {begin.bib}
 { preamble$ empty$
     'skip$

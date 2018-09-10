@@ -683,8 +683,7 @@ The topology for this system will be generated with the GROMOS96 53A6 force fiel
 Invoke \texttt{pdb2gmx} to produce the topology:
 
 \begin{lstlisting}
-$ gmx pdb2gmx -f KALP-15_princ.pdb 
--o KALP-15_processed.gro -ignh -ter -water spc
+$ gmx pdb2gmx -f KALP-15_princ.pdb -o KALP-15_processed.gro -ignh -ter -water spc
 \end{lstlisting}
 
 Note the use of the \texttt{-ignh} option above. The initial coordinates are an all-atom model. GROMOS96 is a united-atom force field, meaning that nonpolar hydrogen atoms are merged into their parent carbon atoms. This convention means there are fewer atoms in the system and thus the simulation will proceed more quickly. Using \texttt{-ignh} allows \texttt{pdb2gmx} to ignore all hydrogen atoms and rebuild only those required by the force field.

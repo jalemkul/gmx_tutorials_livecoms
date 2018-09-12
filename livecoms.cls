@@ -90,6 +90,8 @@
 \if@onehalfspacing\linespread{1.5}\fi
 \if@doublespacing\linespread{2.0}\fi
 
+\emergencystretch 3em
+
 \RequirePackage{graphicx,xcolor}
 \definecolor{LiveCoMSDarkBlue}{HTML}{273B81}
 \definecolor{LiveCoMSLightBlue}{HTML}{0A9DD9}

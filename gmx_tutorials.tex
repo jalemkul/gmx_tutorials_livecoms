@@ -249,7 +249,7 @@ Once a starting structure has been chosen and the choice of force field decided 
 \begin{lstlisting}
 $ gmx pdb2gmx -f 1AKI_clean.pdb -o 1AKI_processed.gro -water spce
 \end{lstlisting}
-
+%
 The first prompt is for the user to select the force field that will be applied to the system. For this tutorial, choose option 15 for OPLS-AA, a widely used all-atom force field. An all-atom force field is used here for simplicity rather than introducing concepts of implicit hydrogen atoms as in united-atom force fields or coarse-grain representations. In principle, many of the force fields provided with GROMACS would be adequate for the purposes of this tutorial. The next choice the user must make is the water model that is to be used. In the tutorial, the \texttt{-water} argument is invoked from \texttt{pdb2gmx} to select the SPC/E water mode~\cite{Berendsen1987}; if this option is not given on the command line, the user is prompted for an interactive choice. The water model is another important consideration, though one over which the user has less freedom. Each force field was parametrized for use with a specific water model. Therefore, the user is not entirely free to choose whichever model happens to be available without due consideration. GROMACS provides a suggested water model for each force field; unless there is good evidence to choose another model, the user should follow this recommendation for greatest accuracy. However, some studies have shown that different biomolecular force fields may be accurately combined with other water models, as is the case in this tutorial. The OPLS-AA force field was originally parametrized for use with the TIP3P water model~\cite{Jorgensen1983}, but it was subsequently shown that the combination of OPLS-AA with SPC/E yielded more accurate hydration free energies for protein side chains~\cite{Hess2006}, suggesting this combination is a sufficiently accurate and self-consistent model for simulating proteins. In the absence of any sufficiently strong justification or precedent, the user should always choose the recommended water model listed by \texttt{pdb2gmx}.
 
 Often, new users are confused at having to choose a water model at this stage, particularly in the case that their provided coordinate file only contains a biomolecule such as a protein. The water model selection is planning for the subsequent steps, in which this solute is hydrated and a force field choice should be made ahead of time. By selecting the water model at this first step, \texttt{pdb2gmx} can write a complete topology that will describe all the species that will be included in the system being built.
@@ -321,7 +321,7 @@ Recall the net charge printed by \texttt{pdb2gmx}, which should be +8. This numb
 \begin{lstlisting}
 $ gmx genion -s ions.tpr -o 1AKI_solv_ions.gro -p topol.top -pname NA -nname CL -neutral
 \end{lstlisting}
-
+%
 Choose group 13 (SOL) to replace water molecules with ions. Do not choose System or Protein, or any similar group, otherwise the output system will be completed fragmented and unphysical.
 
 \texttt{genion} reads the \texttt{.tpr} file passed to the \texttt{-s} option and outputs (\texttt{-o}) a coordinate file called \texttt{1AKI\_solv\_ions.gro}. It makes changes to the topology (deleting water and adding the requested ions), therefore the use of \texttt{-p} to specify the topology is strongly encouraged. The \texttt{-pname} and \texttt{-nname} specify the residue names of positive and negative ions, respectively. This example does not require the addition of sodium ions (Na\textsuperscript{+}) but is shown for illustrative purposes. The user can specify the number of negative ions to be added with \texttt{-nn}, and if positive ions were needed, they would be specified with \texttt{-np}. Note that the charge on different systems will be different, and in some instances, it is desirable to add a higher salt concentration. To automatically neutralize a system, use the \texttt{-neutral} option, and to set a target concentration for which \texttt{genion} will determine the number of ions to be added (rather than specifying them manually), use \texttt{-conc} with a suitable value (in M).
@@ -343,9 +343,9 @@ In this section, the contents of the \texttt{.mdp} file will be discussed in dep
 
 \begin{lstlisting}
 integrator	= steep
-emtol      = 1000.0
-emstep     = 0.01
-nsteps     = 50000
+emtol           = 1000.0
+emstep          = 0.01
+nsteps          = 50000
 \end{lstlisting}
 
 These instructions tell the GROMACS program \texttt{mdrun} (discussed below) to use the steepest descents method for energy minimization, and to terminate the process if the magnitude of the potential energy gradient is 1000.0 kJ mol\textsuperscript{-1} nm\textsuperscript{-1} or smaller. The maximum step size along the gradient is 0.01 nm, and a maximum of 50000 steps are allowed. The default value of \texttt{emstep} in GROMACS of 0.01 nm is used, but it is often necessary to use a smaller maximum step ({\em e.g.} 0.002 nm) for systems that have difficulty converging; the smaller step size allows for a more thorough walk over the potential energy surface, whereas a larger step may miss a path to the true minimum. It is also possible to allow the process to go on indefinitely, stopping only when convergence is reached (due to numerical precision or by actually achieving \texttt{emtol}) by setting \texttt{nsteps = -1}. Note that \texttt{emstep} has units of distance, not time. Energy minimization is not a dynamical process; time does not elapse between each step and there are no velocities. Energy minimization steps are expressed in terms of maximum displacement along the vector indicated by the force.
@@ -377,7 +377,7 @@ The GROMACS \texttt{mdrun} program is responsible for performing all minimizatio
 \begin{lstlisting}
 $ gmx mdrun -v -deffnm em
 \end{lstlisting}
-
+%
 The \texttt{-v} option invokes "verbose" mode, in which an estimate of time remaining is printed to the screen, along with the current energy minimization step, the step size, potential energy, and maximum force. It is not a required option, and if printed to a file, may result in a large file that is saved to disk. It is, however, instructive to watch the progress of energy minimization to understand what is going on. The \texttt{-deffnm} option defines the base file name for all input and output files and eliminates the need for using individual input and output flags to specify names. 
 
 \texttt{mdrun} requires the \texttt{.tpr} file as its only input, normally passed to the \texttt{-s} flag. \texttt{mdrun} produces several file types, including an ASCII text file with a \texttt{.log} extension, a binary file with all energy values with a \texttt{.edr} extension, and trajectory files with either \texttt{.trr} (full-precision coordinates, velocities, and/or forces) or \texttt{.xtc} (reduced precision coordinates only) extensions. When using \texttt{-deffnm}, these files will be called \texttt{em}, with a corresponding file extension. It is useful to name files in this manner to avoid relying on default file names (\texttt{md.log}, \texttt{ener.edr}, \texttt{traj.trr}, \texttt{traj\_comp.xtc}), which will be the same for any process carried out by \texttt{mdrun}.
@@ -483,7 +483,7 @@ Create the NVT equilibration \texttt{.tpr} file with \texttt{grompp}:
 \begin{lstlisting}
 $ gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -o nvt.tpr
 \end{lstlisting}
-
+%
 The command-line options to \texttt{grompp} are largely the same as those used above for energy minimization, but there is one addition, the \texttt{-r} flag. This option specifies the name of a coordinate file that is used as the origin for the position restraint biasing potential. That is, this coordinate file contains the reference positions (hence \texttt{-r}) at which the biasing potential on the atoms would be zero. In previous versions of GROMACS, this option was not mandatory, but in the 2018 version, it is required to prevent users from incorrectly specifying the origin of their biasing potentials. In most cases, however, the coordinates passed to \texttt{-c} and \texttt{-r} will be the same. There are advanced use cases in which different coordinate files will be used, but they are beyond the scope of this tutorial.
 
 Perform NVT equilibration by invoking \texttt{mdrun}:
@@ -597,7 +597,7 @@ The GROMACS program that applies coordinate manipulations to account for periodi
 \begin{lstlisting}
 $ gmx trjconv -s md_0_1.tpr -f md_0_1.xtc -o md_0_1_noPBC.xtc -pbc mol -center
 \end{lstlisting}
-
+%
 The user is prompted for two selections. The first requires a choice of which group to center in the unit cell. Choose group 1 (Protein). The second prompt asks the user to choose which group should be output in the modified trajectory. For simplicity, choose group 0 (System).
 
 Additional manipulations can be applied, such as rotational and translational fitting to produce a smoother visualization of the trajectory. Such fitting relies on a least-squares fit to a reference structure in the \texttt{.tpr} file. For the purposes of this tutorial, no such fitting will be applied, but interested readers are referred to the \texttt{-fit} option of \texttt{trjconv} and associated options. Note that one should not simultaneously use \texttt{-fit} and \texttt{-pbc}, as they are mathematically incompatible. Correct periodicity effects first, then deal with rotational and/or translational fitting.
@@ -609,7 +609,7 @@ If one is interested in quantifying how much the protein structure changed over 
 \begin{lstlisting}
 $ gmx rms -s md_0_1.tpr -f md_0_1_noPBC.xtc -o rmsd.xvg -tu ns
 \end{lstlisting}
-
+%
 When prompted, choose group 4 (Backbone) for both the group for fitting and the group for output. The RMSD thus reflects the net change in backbone configuration after accounting for global rotation and translation.
 
 It may also be of interest to calculate the RMSD with respect to some other structure, such as a specific frame of interest or the crystal structure rather than the equilibrated (t = 0 ns) coordinates. To compute the RMSD with respect to the crystal structure, provide \texttt{rms} with the \texttt{em.tpr} file, which was the input to energy minimization. The coordinates of the protein contained therein are the crystal structure with the hydrogen atoms added by \texttt{pdb2gmx}. Invoke \texttt{rms} again:
@@ -617,7 +617,7 @@ It may also be of interest to calculate the RMSD with respect to some other stru
 \begin{lstlisting}
 $ gmx rms -s em.tpr -f md_0_1_noPBC.xtc -o rmsd_xtal.xvg -tu ns
 \end{lstlisting}
-
+%
 As before, choose group 4 (Backbone) for both the group for fitting and the group for output. The two resulting RMSD time series can be plotted together, as shown in Figure~\ref{lyso_md_rmsd_fig}.
 
 \begin{figure}[h]
@@ -685,7 +685,7 @@ Invoke \texttt{pdb2gmx} to produce the topology:
 \begin{lstlisting}
 $ gmx pdb2gmx -f KALP-15_princ.pdb -o KALP-15_processed.gro -ignh -ter -water spc
 \end{lstlisting}
-
+%
 Note the use of the \texttt{-ignh} option above. The initial coordinates are an all-atom model. GROMOS96 is a united-atom force field, meaning that nonpolar hydrogen atoms are merged into their parent carbon atoms. This convention means there are fewer atoms in the system and thus the simulation will proceed more quickly. Using \texttt{-ignh} allows \texttt{pdb2gmx} to ignore all hydrogen atoms and rebuild only those required by the force field.
 
 It is important to note here that united-atom force fields are not very commonly used. In the past, when computing power was much lower, it was desirable to limit the number of atoms in the system. All modern force fields had their origins in united-atom parameter sets~\cite{Gelin1979,Weiner1984,Jorgensen1984}. In the present tutorial, a united-atom force field will be used as it is convenient for demonstrating the principles necessary to construct the membrane protein system and manipulate the underlying force field files. With phospholipids, the reduction in the number of atoms in the system is also quite dramatic, leading to considerable increase in simulation speed.
@@ -755,7 +755,6 @@ to:
 
 Finally, add an \texttt{\#include} statement to add the DPPC topology to the system topology, in the exact location shown (to avoid disrupting any other \texttt{[moleculetype]} in the topology:
 
-% \begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
 \begin{lstlisting}[basicstyle=\small\ttfamily]
 ; Include Position restraint file
 #ifdef POSRES
@@ -856,7 +855,7 @@ The coordinates and topology are now ready to be processed with the InflateGRO P
 \begin{lstlisting}
 $ perl inflategro.pl system.gro 4 DPPC 14 system_inflated.gro 5 area.dat
 \end{lstlisting}
-
+%
 The order of command-line arguments passed to InflateGRO is specific and must adhere to this exact order. The syntax is as follows:
 
 \begin{enumerate}
@@ -901,7 +900,7 @@ $ gmx trjconv -s system_inflated_em.tpr -f system_inflated_em.gro -o tmp.gro -pb
 
 $ mv tmp.gro system_inflated_em.gro
 \end{lstlisting}
-
+%
 The use of \texttt{tmp.gro} is necessary as \texttt{trjconv} returns an error when trying to read from, and write to, the same file name when correcting for PBC effects.
 
 After the first energy minimization, the lipids need to be packed around the protein. To do so, use InflateGRO to apply a scaling factor that is less than 1. Doing so moves the lipids towards the protein. It is wise to do this packing very slowly to prevent intermolecular clashes that will lead to an unstable system. A typical scaling factor during packing is 0.95. To perform the first shrinking/packing step, invoke InflateGRO as follows:
@@ -909,7 +908,7 @@ After the first energy minimization, the lipids need to be packed around the pro
 \begin{lstlisting}
 $ perl inflategro.pl system_inflated_em.gro 0.95 DPPC 0 system_shrink1.gro 5 area_shrink1.dat
 \end{lstlisting}
-
+%
 Note that the cutoff radius has also been reduced to 0 \AA. Such a cutoff value disables the deletion of lipids. It is only appropriate to delete lipids during inflation; if the cutoff value is retained, eventually all of the lipids (or a great many of them) will be deleted and the system will be useless. After 26 rounds of packing (shrinking the lipids inward, energy minimization, and reconstruction of "broken" lipids), an area per lipid of roughly 71 \AA\textsuperscript{2} should be attained. Since InflateGRO overestimates area per lipid slightly, this value is an indication that additional shrinking is not necessary. That is, it is not necessary to achieve the exact experimental value of area per lipid (62 \AA\textsuperscript{2}). The online tutorial provides a Bash script that automates this process, but users wishing to learn via repetition can challenge themselves to carry out this process manually and become very comfortable with proper file naming. In summary, the process of packing lipids around the KALP\textsubscript{15} peptide is illustrated in Figure~\ref{kalp_lipid_pack}.
 
 It is now time to add water to the system using \texttt{solvate}. One issue that will likely arise is that water molecules will be added within small void volumes in the hydrophobic core of the membrane. There are several strategies one can apply to deal with this situation, but the easiest is to allow \texttt{solvate} to add however many water molecules it can and subsequently delete those that fall within the membrane core. Solvate as usual with:
@@ -933,7 +932,7 @@ $ gmx grompp -f ions.mdp -c system_solv_fix.gro -p topol.top -o ions.tpr
 
 $ gmx genion -s ions.tpr -o system_solv_ions.gro -p topol.top -pname NA -nname CL -neutral
 \end{lstlisting}
-
+%
 Choose group 15 (SOL) for replacing water molecules with Cl\textsuperscript{$-$} ions.
 
 \subsubsection{Energy Minimization} \label{kalp_em}
@@ -962,7 +961,7 @@ Equilibration of the KALP\textsubscript{15}-DPPC system will be carried out in t
 \begin{lstlisting}
 $ gmx make_ndx -f em.gro -o index.ndx
 \end{lstlisting}
-
+%
 Merge the protein (group 1) and DPPC (group 13) index groups with: \texttt{1 | 13}, type Enter, then type \texttt{q} and Enter to quit \texttt{make\_ndx}.
 
 In equilibrating the lysozyme system (Section~\ref{lyso_equil}), temperature coupling groups were set to:
@@ -1066,7 +1065,7 @@ To plot the deuterium order parameters for the {\em sn-1} chain, invoke \texttt{
 \begin{lstlisting}
 $ gmx order -s md_0_1.tpr -f md_0_1.xtc -n sn1.ndx -d z -od deuter_sn1.xvg
 \end{lstlisting}
-
+%
 It is important to note that the value of $-S_{CD}$ cannot be calculated for terminal carbon atoms, that is the carbonyl carbon (C34 in the {\em sn-1} chain) and the terminal methyl carbon (C50 in the {\em sn-1} chain). This limitation arises from the calculation of the local molecular axis. To compute this axis, the previous and next carbon atoms in the acyl chain are needed. For terminal carbon atoms, this axis is undefined. The output file (in this case, \texttt{deuter\_sn1.xvg}) from \texttt{order} is numbered from 1, as the program does not necessarily know which segment of the chain is being analyzed. For plotting purposes, edit the atom numbers in \texttt{deuter\_sn1.xvg} by incrementing each by 1. The resulting plot (after similarly analyzing the {\em sn-2} chain) will look something like what is shown in Figure~\ref{kalp_dppc_scd_fig}.
 
 \begin{figure}[h!]
@@ -1101,7 +1100,7 @@ Use the \texttt{density} program to compute the partial densities of each of the
 \begin{lstlisting}
 $ gmx density -s md_0_1.tpr -f md_0_1.xtc -n density_groups.ndx -o dens_headgroups.xvg -d Z
 \end{lstlisting}
-
+%
 Select group number 22, then repeat the process for the glycerol ester, acyl chain, and water (SOL) groups. Plotting the files in XmGrace yields Figure~\ref{kalp_dppc_dens_fig}.
 
 \begin{figure}[h!]
@@ -1137,7 +1136,7 @@ Invoke \texttt{msd}:
 \begin{lstlisting}
 $ gmx msd -s md_0_1.tpr -f md_0_1.xtc -n p8.ndx -lateral z
 \end{lstlisting}
-
+%
 The \texttt{-lateral} option instructs \texttt{msd} to calculate only the diffusion within the {\em x-y} plane, that is, the {\em z}-axis is normal to the plane of interest. The result from this simple system is likely to vary widely and is in no way converged or reflective of equilibrium lipid diffusion. From the limited number of data points, the statistical certainty of this value is likely to be poor, and a value like 2.7 $\pm$ 2.7 $\times$ 10\textsuperscript{-7} cm\textsuperscript{2} s\textsuperscript{-1} might be obtained. This value is neither accurate nor precise, and as such a much longer simulation would be required to obtain a more reliable value. For the purposes of this tutorial, this calculation serves as a cautionary note about the proper time scale required for performing simulations of lipid membranes. Interested users are encouraged to extend the simulation out to 50 or 100 ns and compare the values obtained over these time frames.
 
 As a final note, it is important to recognize that periodic boundary conditions and the size of the box will influence the obtained value of $D_0$. In fact, the result obtained here is not truly $D_0$, it is a size-dependent quantity termed $D_{PBC}$ per Yeh and Hummer~\cite{Yeh2004}, who derived a correction factor that can be applied to obtain the true value of $D_0$ in periodic systems.
@@ -1179,7 +1178,7 @@ The system being studied here is a pentamer of the A$\beta$ peptide, in an aggre
 \begin{lstlisting}
 $ gmx pdb2gmx -f 2BEG_model1_capped.pdb -o complex.gro -ignh -ter
 \end{lstlisting}
-
+%
 Choose the GROMOS96 53A6 parameter set as the force field, and when prompted, choose "None" for all N-termini (to indicate the fact that no modifications should be made to acetyl groups) and "COO\textsuperscript{$-$}" for the C-termini (as Ala42 is the true C-terminus of the A$\beta$\textsubscript{42} peptide). The fact that there are multiple protein chains in the coordinates is not a problem for \texttt{pdb2gmx}, as it can produce a topology for each provided that the individual chains are either denoted with different chain identifiers (as is the case here) or delimited by TER cards.
 
 Later, in Section~\ref{umbrella_smd}, a biasing force will be applied to one of the peptides (chain A) in the pentamer. To avoid distortions to the structure, restraints will be applied to chain B to immobilize it during this process. Note that \texttt{pdb2gmx} has produced individual topologies and restraint file topologies (all with extension \texttt{.itp}) for each chain. Add the following to the end of \texttt{topol\_Protein\_chain\_B.itp}:
@@ -1201,7 +1200,7 @@ An orthorhombic box that defines a solute-box distance of 1.0 nm would result in
 \begin{lstlisting}
 $ gmx editconf -f complex.gro -o newbox.gro -center 3.280 2.181 2.4775 -box 6.560 4.362 12
 \end{lstlisting}
-
+%
 After doing so, the protofibril will be positioned within the unit cell as shown in Figure~\ref{umbrella_box_fig}.
 
 \begin{figure}[H]
@@ -1335,13 +1334,13 @@ The GROMACS \texttt{trjconv} program has an option to write each frame in a traj
 \begin{lstlisting}
 $ gmx trjconv -s pull.tpr -f pull.xtc -o conf.gro -sep
 \end{lstlisting}
-
+%
 Each snapshot will be written to a file called \texttt{confN.gro}, where N is the index of the frame. The COM distance between chains A and B in each of these frames is computed with the GROMACS \texttt{distance} program, {\em e.g.} for the frame at t = 0 ps:
 
 \begin{lstlisting}
 $ gmx distance -s pull.tpr -f conf0.gro -select 'com of group "Chain_A" plus com of group "Chain_B"' -n index.ndx -oall dist0.xvg
 \end{lstlisting}
-
+%
 Note the use of single quotes (') to enclose the entire selection string and double quotes (") to enclose group names referenced from \texttt{index.ndx}.
 
 The online version of this tutorial provides a Bash script (\texttt{get\_distances.sh}) that automates this entire process and compiles the COM distances into a single text file. This file should be inspected for snapshots at intervals of approximately 0.2 nm (perfectly even spacing is unlikely) and the frame indices should be recorded and corresponding coordinate files saved.
@@ -1420,7 +1419,7 @@ It is also worth mentioning how WHAM computes the actual PMF values along $\xi$.
 \begin{lstlisting}
 $ gmx wham -it tpr-files.dat -if pullf-files.dat -o profile_shift.xvg -hist -unit kCal -zprof0 0.5
 \end{lstlisting}
-
+%
 The result of this new calculation is shown in Figure~\ref{umbrella_pmf_shift_fig}.
 
 \begin{figure}[h!]
@@ -1472,7 +1471,7 @@ To build a 5-nm cubic box and attempt to fill it with up to 1200 cyclohexane mol
 \begin{lstlisting}
 $ gmx insert-molecules -ci chx.gro -nmol 1200 -box 5 5 5 -o chx_box.gro
 \end{lstlisting}
-
+%
 The program reports that 1114 of the requested 1200 cyclohexane molecules were placed in the box. Note that default van der Waals radii used by GROMACS programs like \texttt{insert-molecules} and \texttt{solvate} were changed in version 5.0, so different versions may report different outcomes with respect to this number. As insertion is randomly seeded process, even versions in the 2018.x series may vary slightly.
 
 The second method for constructing a box of pure liquid uses the \texttt{genconf} program to build a lattice of molecules. This approach requires that the input coordinate file have a properly defined periodic box size so that molecules can be positioned correctly without overlapping. If the box size is not adequate, the \texttt{-dist} option (which takes a full vector as its argument) can be used to space the replicated coordinates. The drawback to the \texttt{genconf} method is that the resulting system is highly artificial because it is a perfect lattice, and will require a much longer equilibration time to converge to a liquid state. To build a box containing 512 cyclohexane molecules (8\textsuperscript{3}), invoke \texttt{genconf} as follows:
@@ -1492,7 +1491,7 @@ As in the Umbrella Sampling tutorial (see Section~\ref{umbrella_box}), set the e
 \begin{lstlisting}
 $ gmx editconf -f chx_10ns.gro -o chx_newbox.gro -box 4.30795 4.30795 8.6159 -center 2.153975 2.153975 2.153975
 \end{lstlisting}
-
+%
 The resulting system will look like what is shown in Figure~\ref{biphasic_system_newbox_fig}.
 
 \begin{figure}[h!]
@@ -1518,12 +1517,12 @@ To study partitioning behavior of peptides or small molecules, the approach take
 $ gmx editconf -f peptide.gro -o peptide_newbox.gro -box 4.30795 4.30795 8.6159 -center 2.153975 2.153975 6.461925
 \end{lstlisting}
 
-Then "solvate" the peptide with the repositioned cyclohexane layer, which has box dimensions identical to what were just assigned to the peptide, meaning the two components will fit together exactly:
+Then, "solvate" the peptide with the repositioned cyclohexane layer, which has box dimensions identical to what were just assigned to the peptide, meaning the two components will fit together exactly:
 
 \begin{lstlisting}
 $ gmx solvate -cp peptide_newbox.gro -cs chx_newbox.gro -o peptide_chx.gro
 \end{lstlisting}
-
+%
 The resulting system appears in Figure~\ref{peptide_chx_fig}, and can subsequently be solvated with water using \texttt{solvate}.
 
 \begin{figure}[h!]
@@ -1585,13 +1584,13 @@ The GROMACS program \texttt{pdb2gmx} can only generate topologies for species it
 \begin{lstlisting}
 $ grep JZ4 3HTB_clean.pdb > jz4.pdb
 \end{lstlisting}
-
+%
 After saving these coordinates, delete the JZ4 coordinate lines from \texttt{3HTB\_clean.pdb} and generate the protein topology with \texttt{pdb2gmx}:
 
 \begin{lstlisting}
 $ gmx pdb2gmx -f 3HTB_clean.pdb -o 3HTB_processed.gro
 \end{lstlisting}
-
+%
 When prompted, choose the CHARMM36 force field (the first entry in the list, "From current directory") and the default water model, TIP3P modified for use with CHARMM.
 
 \subsubsection{Ligand Topology Preparation} \label{complex_lig_top}
@@ -1614,7 +1613,7 @@ This file is syntactically valid, but still needs modification. The bonds in the
 \begin{lstlisting}
 $ perl sort_mol2_bonds.pl jz4.mo2 jz4_fix.mol2
 \end{lstlisting}
-
+%
 The final, fully corrected file \texttt{jz4\_fix.mol2} is what will be used as input to the CGenFF server.
 
 The \texttt{jz4\_fix.mol2} will next be uploaded to the CGenFF web server. The use of this server is free for academic purposes, though user registration is required. Once \texttt{jz4\_fix.mol2} has been uploaded, the server will return a topology and parameter file in a CHARMM-formatted stream file (\texttt{jz4.str}). This file should be downloaded from the CGenFF website so it can be converted to GROMACS format. Before continuing, the contents of \texttt{jz4.str} should be inspected. CGenFF calculates penalty scores as an indicator of the quality of the topology. Parameters are assigned by analogy, and in cases for which a strong match cannot be made, the penalty score will be large. Any penalty less than 10 indicates a reliable topology. Penalties between 10 and 50 inform the user that some refinement may be necessary, and at minimum, some basic validation should be performed (QM potential energy scans in the case of bonded parameters, QM water interactions for charges), and penalty scores larger than 50 indicate that significant manual refinement or reparametrization is required. The CGenFF topology for 2-propylphenol has penalties below 1 for both charges and the new dihedrals that were generated. This topology is likely suitable for use directly as it is.
@@ -1736,7 +1735,7 @@ gmx make_ndx -f jz4.gro -o index_jz4.ndx
 > 0 & ! a H*
 > q
 \end{lstlisting}
-
+%
 The expression above (\texttt{0 \& ! a H*}) selects all atoms in the system (group 0) that do not (!) have names starting with H. Once this index file has created, use it to write a position restraint topology for the ligand, selecting group 3 when prompted.
 
 \begin{lstlisting}
@@ -1783,7 +1782,7 @@ After the simulation is over, the effects of periodic boundary conditions must b
 \begin{lstlisting}
 $ gmx trjconv -s md_0_10.tpr -f md_0_10.xtc -o md_0_10_center.xtc -center -pbc mol -ur compact
 \end{lstlisting}
-
+%
 Choose the "Protein" group for centering  and "System" for output.
 
 To visualize the trajectory in a program like VMD, extract the first frame and save it as a coordinate file (\texttt{.gro} or \texttt{.pdb} format):
@@ -1791,7 +1790,7 @@ To visualize the trajectory in a program like VMD, extract the first frame and s
 \begin{lstlisting}
 $ gmx trjconv -s md_0_10.tpr -f md_0_10_center.xtc -o start.pdb -dump 0
 \end{lstlisting}
-
+%
 It is also apparent that this coordinate file has the expected box shape (Figure~\ref{3htb_t0_rewrap_fig}).
 
 \begin{figure}[h!]
@@ -1890,7 +1889,7 @@ GROMACS intrinsically sorts the atom indices in the groups, so the actual angle 
 [ JZ4_&_OAB_H12_Protein_&_r_102_&_OE1 ]
 2624 2636 1616
 \end{lstlisting}
-
+%
 Using this index group as an input into the \texttt{angle} program yields an average value of 147 $\pm$ 11\textdegree.
 
 Another analysis that is commonly performed in simulations of protein-ligand complexes is the ligand RMSD, to determine how much the binding pose changed over time. This quantity can be useful in assessing the stability of the interactions between the ligand and the protein, and also as an indicator of the quality of the ligand topology. That is, a poor-quality topology will not preserve the native interactions and will often lead to distorted binding poses or even dissociation. Begin by creating a new index group containing only the heavy atoms of 2-propylphenol:
@@ -1931,7 +1930,7 @@ Extract the interaction energy components, Coul-SR:Protein-JZ4 (group 51) and LJ
 \begin{lstlisting}
 $ gmx energy -f ie.edr -o interaction_energy.xvg
 \end{lstlisting}
-
+%
 The output should indicate that the short-range Coulombic interaction energy is -20.5 $\pm$ 7.4 kJ mol\textsuperscript{$-$1} and the short-range Lennard-Jones interaction energy is -99.1 $\pm$ 7.2 kJ mol\textsuperscript{$-$1}. The decomposition of these terms, regardless of force field, has no physical meaning. Only the total interaction energy may be considered a useful metric, again only if the force field has been parametrized in such a way that makes this quantity useful. Thus, the total interaction energy between 2-propylphenol and T4 lysozyme over the 10-ns MD simulation performed here is -119.6 $\pm$ 10.3 kJ mol\textsuperscript{$-$1}.
 
 \subsubsection{Summary and Review of Objectives} \label{prot_lig_summary}
@@ -2091,7 +2090,7 @@ Collect all of the output \texttt{md*.xvg} files from the production MD runs int
 \begin{lstlisting}
 $ gmx bar -f md*.xvg -o -oi
 \end{lstlisting}
-
+%
 The \texttt{bar} program prints free energy differences for each $\lambda$ window to the terminal (including entropy in each window, all in units of kT). At the end of the printed information will be the final results, in kJ mol\textsuperscript{$-$1}:
 
 \begin{lstlisting}
@@ -2229,7 +2228,7 @@ A CO\textsubscript{2} molecule is essentially a linear, triatomic rotor, from wh
 \begin{equation} \label{eq_rotor}
 I = 2 m_O L^2
 \end{equation}
-
+%
 The value of L is the C=O bond length, 0.125 nm. Substituting in the value of $m_O$ (15.9994 amu) yields a moment of inertia of 0.500 amu nm\textsuperscript{2}.
 
 Next, the distance between the mass centers (Figure~\ref{vsites_masses_fig}) must be determined, such that the moment of inertia for the molecule is preserved.
@@ -2318,7 +2317,7 @@ $ gmx grompp -f em.mdp -c box.pdb -p topol.top -o em.tpr
 
 $ gmx mdrun -nt 1 -nb cpu -deffnm em
 \end{lstlisting}
-
+%
 Note that the use of the group cutoff scheme prevents the use of a GPU, hence the use of \texttt{-nb cpu} to tell \texttt{mdrun} to only use CPU hardware. Only one thread is started since the system only contains 50 particles. It will not benefit from parallelization.
 
 Continue with MD:
@@ -2342,7 +2341,7 @@ Use the GROMACS \texttt{principal} program to compute the moments of inertia. Ch
 \begin{lstlisting}
 $ gmx principal -s md.tpr -f md.trr -n index.ndx
 \end{lstlisting}
-
+%
 The output file, \texttt{moi.xvg}, contains moments of inertia around the $x$-, $y$-, and $z$-axes. Rotation around $x$ is zero, because this axis coincides with the M1-M2 constraint. The $y$- and $z$- moments are 0.500, in exact agreement with the value computed above. This outcome indicates that the approach taken to convert a triatomic molecule into a rigid, diatomic rotor is physically reasonable.
 
 \subsubsection{Summary and Review of Objectives} \label{vsite_summary}

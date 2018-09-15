@@ -743,19 +743,20 @@ These modifications of the force field files are fairly significant, and it is i
 
 Next, to make use of the modified force field, an adjustment to the system topology (\texttt{topol.top}) must be made. Change the call to the force field from:
 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\small\ttfamily]
 #include "gromos53a6.ff/forcefield.itp"
 \end{lstlisting}
 %
 to:
 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\small\ttfamily]
 #include "gromos53a6_lipid.ff/forcefield.itp"
 \end{lstlisting}
 
 Finally, add an \texttt{\#include} statement to add the DPPC topology to the system topology, in the exact location shown (to avoid disrupting any other \texttt{[moleculetype]} in the topology:
 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+% \begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\small\ttfamily]
 ; Include Position restraint file
 #ifdef POSRES
 #include "posre.itp"
@@ -1158,7 +1159,7 @@ By adding parameters from an external force field file (in this case, \texttt{li
 %%%%%%%%% TUTORIAL 3 %%%%%%%%%
 \subsection{Tutorial 3: Umbrella Sampling} \label{pmf}
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics{umbrella_protofibril_dissociate}
 \caption{The terminal peptide of the A$\beta$\textsubscript{42} protofibril dissociates along the fibril axis, the degree of freedom over which the free energy difference, $\Delta$G, is computed.}
@@ -1449,7 +1450,7 @@ To conclude, it is again important to emphasize that the system simulated here i
 %%%%%%%%% TUTORIAL 4 %%%%%%%%%
 \subsection{Tutorial 4: Biphasic Systems} \label{biphasic}
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics{biphasic_system}
 \caption{A layered, biphasic system of water (blue, top) and cyclohexane (gray, bottom).}
@@ -1560,7 +1561,7 @@ The tutorial demonstrated how an initial system of non-aqueous liquid can be bui
 %%%%%%%%% TUTORIAL 5 %%%%%%%%%
 \subsection{Tutorial 5: Protein-Ligand Complex} \label{prot_lig}
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics{lysozyme_complex_3htb}
 \caption{Crystal structure of T4 lysozyme L99A/M102Q with bound 2-propylphenol ligand, taken from PDB 3HTB~\cite{Boyce2009}.}
@@ -1657,7 +1658,7 @@ Having added the coordinates of the ligand to the system, the topology must also
 
 Since the ligand requires new parameters to be added to the force field, the \texttt{jz4.prm} file must also be add to the topology via an \texttt{\#include} statement. Such a statement must be placed specifically within \texttt{topol.top}. It must be after the \texttt{\#include} statement for the CHARMM36 force field, but before the declaration of the protein \texttt{[moleculetype]} directive. Bonded parameters can only be added for known atom types, hence why \texttt{jz4.prm} must be added after the first call to the CHARMM36 force field. Similarly, all parameters in the force field must be defined before any molecule definitions can be introduced. Therefore, update \texttt{topol.top} to read as follows:
 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\small\ttfamily]
 ; Include forcefield parameters
 #include "./charmm36-jul2017.ff/forcefield.itp"
 
@@ -1671,7 +1672,7 @@ Protein_chain_A     3
 
 Finally, update the contents of the \texttt{[ molecules ]} directive of \texttt{topol.top} to reflect the fact that the ligand coordinates have been added to the system:
 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\small\ttfamily]
 [ molecules ]
 ; Compound        #mols
 Protein_chain_A     1
@@ -2164,7 +2165,7 @@ The user was introduced to settings related to free energy in Section~\ref{fes_s
 %%%%%%%%% TUTORIAL 7 %%%%%%%%%
 \subsection{Tutorial 7: Virtual Sites} \label{vsite}
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics{vsites_co2}
 \caption{The CO\textsubscript{2} molecule, with two mass centers (cyan) that are used to construct virtual sites that replace the C and O atoms.}

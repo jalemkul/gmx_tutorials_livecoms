@@ -24,3 +24,4 @@ This paper is being developed as a living document, open to changes from the com
 - 10 July 2018: First full draft completed, all tutorials updated for GROMACS-2018
 - 27 August 2018: Revised based on peer review comments
 - 10 September 2018: Revised based on editorial comments
+- 30 December 2018: Final version of PDF and article files for publication in LiveCoMS

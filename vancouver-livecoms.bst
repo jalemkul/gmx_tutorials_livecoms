@@ -888,7 +888,7 @@ FUNCTION {format.note}
       'skip$
       { "\urlprefix\url{" url * "}" * output }
     if$}
-    { "\href{https://dx.doi.org/" doi * "}{\doiprefix \detokenize{" * doi * "}}" * output }
+    { "\href{https://doi.org/" doi * "}{\doiprefix \detokenize{" * doi * "}}" * output }
   if$
  note empty$
     { "" }
@@ -1924,7 +1924,7 @@ FUNCTION {begin.bib}
 %  "\providecommand{\urlprefix}{URL }"      ++++ EMPTIED by default
   "\providecommand{\urlprefix}{}"
   write$ newline$
-  "\providecommand{\doiprefix}{doi: }"
+  "\providecommand{\doiprefix}{https://doi.org/}"
   write$ newline$
 }
 EXECUTE {begin.bib}

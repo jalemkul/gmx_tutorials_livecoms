@@ -7,6 +7,8 @@
 % Use the 'onehalfspacing' option for 1.5 line spacing
 % Use the 'doublespacing' option for 2.0 line spacing
 % Use the 'lineno' option for adding line numbers.
+% Use the "ASAPversion' option following article acceptance to add the DOI and relevant dates to the document footer.
+% Use the 'pubversion' option for adding the citation and publication information to the document footer, when the LiveCoMS issue is finalized.
 % The 'bestpractices' option for indicates that this is a best practices guide.
 % Omit the bestpractices option to remove the marking as a LiveCoMS paper.
 % Please note that these options may affect formatting.
@@ -64,6 +66,8 @@
 \corr{jalemkul@vt.edu}{JAL}
 % \corr{email2@example.com}{FS}
 
+\orcid{Justin A. Lemkul}{0000-0001-6661-8653}
+
 % \contrib[\authfn{1}]{These authors contributed equally to this work}
 % \contrib[\authfn{2}]{These authors also contributed equally to this work}
 
@@ -79,6 +83,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pubDOI{10.33011/livecoms.1.1.5068}
 \pubvolume{1}
+\pubissue{1}
 \pubyear{2019}
 \articlenum{5068}
 \datereceived{16 July 2018}
@@ -2430,6 +2435,9 @@ JAL is a developer of the GROMACS simulation package.
 % Authors should acknowledge funding sources here. Reference specific grants.
 %%%%%%%
 JAL thanks the NSF MILES-IGERT and Virginia Tech ICTAS Doctoral Scholars programs for financial support from 2007-2012, during which time the original tutorials were created. JAL is supported by startup funding from the Virginia Tech Office of the Provost, College of Agriculture and Life Sciences, and Department of Biochemistry and USDA National Institute of Food and Agriculture.
+
+\section*{Author Information}
+\makeorcid
 
 \bibliography{gmx-tutorials-refs}
 

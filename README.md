@@ -25,3 +25,4 @@ This paper is being developed as a living document, open to changes from the com
 - 27 August 2018: Revised based on peer review comments
 - 10 September 2018: Revised based on editorial comments
 - 30 December 2018: Final version of PDF and article files for publication in LiveCoMS
+- 2 January 2019: Final formatting fixes

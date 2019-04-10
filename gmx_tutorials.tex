@@ -1577,7 +1577,7 @@ Simulating proteins in complex with small-molecule ligands or inhibitors (Figure
 In this tutorial (available online at \tutorialcomplex), the protein topology will be generated with the CHARMM36m force field~\cite{Huang2016}, a recent revision of the CHARMM36 force field~\cite{Best2012}. The ligand topology will be generated with CGenFF via its web server (\url{https://cgenff.paramchem.org/}). Download the CHARMM36m force field in GROMACS format from the MacKerell lab website (\url{http://mackerell.umaryland.edu/charmm_ff.shtml#gromacs}), as well as the Python script called \texttt{cgenff\_charmm2gmx.py}. Extract the force field archive in the working directory:
 
 \begin{lstlisting}
-$ tar -zxvf charmm36-jul2017.ff.tgz
+$ tar -zxvf charmm36-mar2019.ff.tgz
 \end{lstlisting}
 
 \subsubsection{Protein Topology Preparation} \label{complex_top}
@@ -1626,7 +1626,7 @@ The \texttt{jz4\_fix.mol2} will next be uploaded to the CGenFF web server. The u
 To produce a GROMACS-formatted topology, use the \\\texttt{cgenff\_charmm2gmx.py} script downloaded earlier from the MacKerell lab website. Invoke it as follows:
 
 \begin{lstlisting}
-$ python cgenff_charmm2gmx.py JZ4 jz4_fix.mol2 jz4.str charmm36-jul2017.ff
+$ python cgenff_charmm2gmx.py JZ4 jz4_fix.mol2 jz4.str charmm36-mar2019.ff
 \end{lstlisting}
 %
 Recall from the introduction that this conversion script requires a Python version in the 2.7.x series, with a NetworkX version in the 1.11.x series, not the 2.x series. When finished, the conversion script will produce three important output files:
@@ -1657,14 +1657,14 @@ Having added the coordinates of the ligand to the system, the topology must also
 #include "jz4.itp"
 
 ; Include water topology
-#include "./charmm36-jul2017.ff/tip3p.itp"
+#include "./charmm36-mar2019.ff/tip3p.itp"
 \end{lstlisting}
 
 Since the ligand requires new parameters to be added to the force field, the \texttt{jz4.prm} file must also be add to the topology via an \texttt{\#include} statement. Such a statement must be placed specifically within \texttt{topol.top}. It must be after the \texttt{\#include} statement for the CHARMM36 force field, but before the declaration of the protein \texttt{[moleculetype]} directive. Bonded parameters can only be added for known atom types, hence why \texttt{jz4.prm} must be added after the first call to the CHARMM36 force field. Similarly, all parameters in the force field must be defined before any molecule definitions can be introduced. Therefore, update \texttt{topol.top} to read as follows:
 
 \begin{lstlisting}[basicstyle=\small\ttfamily]
 ; Include forcefield parameters
-#include "./charmm36-jul2017.ff/forcefield.itp"
+#include "./charmm36-mar2019.ff/forcefield.itp"
 
 ; Include ligand parameters
 #include "jz4.prm"

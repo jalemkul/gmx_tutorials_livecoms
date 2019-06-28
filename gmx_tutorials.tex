@@ -1909,7 +1909,7 @@ $ gmx make_ndx -f em.gro -n index.ndx
 This selection should look familiar, as it is the same syntax used to create an index group before generating the ligand position restraint topology. Why, then, is it necessary to recreate it here? The restraint topology requires atom numbers that match those of the \texttt{[moleculetype]} definition, which run from 1 to the number of atoms in the molecule (in this case, 22). These atom numbers differ from the global atom numbers in the coordinate file of the system. That is, in \texttt{posre\_jz4.itp}, the only valid numbers are from 1-22, but the atom numbers of JZ4 in the final system are from 2615-2636, because they appear after the protein (atoms 1-2614). After creating this index group, execute the \texttt{rms} program. Choose "Backbone" for least-squares fitting and "JZ4\_Heavy" for the group for RMSD calculation. Doing so computes the RMSD of the ligand in the context of overall fitting of the protein's motion, that is, how much the ligand has moved relative to the protein.
 
 \begin{lstlisting}
-$ gmx rms -s em.tpr -f md_0_10_center.xtc -tu ns -o rmsd_jz4.xvg
+$ gmx rms -s em.tpr -f md_0_10_center.xtc -tu ns -o rmsd_jz4.xvg -n index.ndx
 \end{lstlisting}
 %
 Note the use of \texttt{em.tpr} as the reference structure. The RMSD is thus being computed using the energy-minimized crystal coordinates as reference. Over the 10-ns simulation, the ligand RMSD plateaus at a value of \textasciitilde0.1 nm (1 \AA). Such a low value indicates that the binding pose was very stable, at least on this short time scale.
